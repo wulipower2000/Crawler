@@ -6,9 +6,9 @@ A simple web crawler framework developed collaboratively by EJ and Chihwei.
 ```mermaid
 
 graph TD;
-	A{{開始}} --> B[main]
+	A{{開始}} --> main[main]
 
-	subgraph B
+	subgraph main
 		B1[Requestor];
 		B2[Parser];
 		B3[Sink];
