@@ -137,17 +137,3 @@ class csv(Sink):
             os.makedirs(data_dir)
             logger.info(f"Directory is Created!")
 
-if __name__ == "__main__":
-
-
-    data = pd.DataFrame({"A":[1,2,3], "B":[4,2,5]})
-
-    #csv = csv()
-    #csv.sink(data, "/home/chihwei/playground/psql-save/test.csv")
-
-    psql = psql(
-        host="localhost", port=5432, user="chihwei",
-        password="Qaz-811215", database="chihwei-test"
-    )
-    
-    psql.sink(data, "mytest")

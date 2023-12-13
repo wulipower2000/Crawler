@@ -25,10 +25,3 @@ class II_Crawler:
         # Step 3: Sink data to CSV
         logger.info('========== Step 3: sink data ==========')
         self.sink.sink(df, self.output_path)
-
-if __name__ == "__main__":
-    # Example usage
-    yyyymmdd = input('請輸入時間 (yyyymmdd) ： ')
-    output_path = f"data/{yyyymmdd}.csv"
-    scraper = II_Crawler(yyyymmdd, output_path)
-    scraper.run()
