@@ -3,8 +3,6 @@ import Parser
 import Sink
 from loguru import logger
 
-
-
 class II_Crawler:
     def __init__(self, yyyymmdd: str, output_path: str):
         self.request = Requestor.II_Request(yyyymmdd)

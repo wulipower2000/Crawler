@@ -13,12 +13,20 @@ install-requestments: ## install package from requestments
 
 clean-toml: ## remove .toml
 	rm -f *.toml
-clean-env: ## clean env
+clean-venv: ## clean venv
 	poetry env remove --all
+clean-data: ## clean data
+	rm -rf ./code/data
+	rm -rf ./data
+clean-log: ## clean log
+	rm -rf ./code/*.log
+	rm -rf ./*.log
+clean-env: ## clean env
+	rm -rf ./code/__pycache__
 
 rebuid: clean-env install ## rebuild poetry
 
-clean: 
+uploda-clean: clean-data clean-log clean-env ## clean file before git push
 
 help: ## print help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-30s\033[0m %s\n", $$1, $$2}'

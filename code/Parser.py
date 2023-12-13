@@ -8,6 +8,7 @@ class Parser(ABC):
     def parse_html_to_dataframe(self):
         pass
     
+    @logger.catch
     @abstractmethod
     def check_data(self, data):
         """
@@ -26,6 +27,7 @@ class II_Parser(Parser):
     def __init__(self, re):
         self.re = re
     
+    @logger.catch
     def parse_html_to_dataframe(self):
         logger.info("Parsing HTML to DataFrame")
         self.re.encoding = 'utf-8'
@@ -34,6 +36,7 @@ class II_Parser(Parser):
         self.check_data(df)
         return df
     
+    @logger.catch
     def check_data(self, data):
         logger.info(f'data shape: {data.shape}')
         super().check_data(data)
