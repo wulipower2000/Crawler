@@ -24,7 +24,7 @@ clean-log: ## clean log
 	rm -rf ./code/*.log
 	rm -rf ./*.log
 clean-env: ## clean env
-	@echo $(pycache_file)
+	rm -rf $(pycache_file)
 
 rebuid: clean-env install ## rebuild poetry
 
