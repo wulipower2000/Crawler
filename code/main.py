@@ -1,6 +1,7 @@
 import click
 from loguru import logger
 from Crawler import II_Crawler
+from application_monitor.Exporter import doctor
 
 trace = logger.add(
     sink="./crawler.log",
@@ -17,6 +18,7 @@ trace = logger.add(
 @click.command(no_args_is_help=True)
 @click.option('-d', '--date', 'date', help='--date yyyymmdd')
 @click.option('-p', '--path', 'path', help='--path [path/to/data/folder]')
+@doctor('./monitor.json')
 def main(date, path):
 
     II_scraper = II_Crawler(date, f"{path}/{date}/II.csv")
