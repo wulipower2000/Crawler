@@ -18,7 +18,8 @@ trace = logger.add(
 @click.command(no_args_is_help=True)
 @click.option('-d', '--date', 'date', help='--date yyyymmdd')
 @click.option('-p', '--path', 'path', help='--path [path/to/data/folder]')
-@doctor('./monitor.json')
+@doctor('./monitor_prometheus.json')
+#@doctor('./monitor.json')
 def main(date, path):
 
     II_scraper = II_Crawler(date, f"{path}/{date}/II.csv")

@@ -27,7 +27,6 @@ class SystemUsage:
         Function to monitor process cpu percentage.
         """
         
-        logger.info("Start monitor cpu percentage.")
         cpu_percent = self.process_info.cpu_percent(interval=self.interval)
         return {"cpu_percent": cpu_percent}
 
@@ -50,7 +49,6 @@ class SystemUsage:
         """
         Function to get folder size.
         """
-        logger.info(f"Start get folder size, path: {path}")
         folder_size, folder_path = sh.du("-s", path).splitlines()[0].split('\t')
         folder_size = self.convert_bytes(
             data = folder_size, unit = self.unit

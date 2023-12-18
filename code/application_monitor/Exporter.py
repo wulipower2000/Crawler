@@ -1,9 +1,12 @@
 import os
 import threading
+import datetime
 
 from application_monitor.ConfigParser import JsonConfigParser as ConfigParser
-from application_monitor.Sink import TextSink as Sink
+#from application_monitor.Sink import TextSink as Sink
+from application_monitor.Sink import PrometheusSink as Sink
 from application_monitor.Monitor import SystemUsage as Exporter
+from application_monitor.CustomException import FieldNotFoundError
 
 from loguru import logger
 from pprint import pprint
@@ -28,7 +31,7 @@ class ProcessExporter:
         self.exporters = {
             "cpu_percent": self.exporter.get_cpu_percent,
             "memory_info":self.exporter.get_memory_info,
-            "folder_info":self.get_folder_size_modify
+            "folder_size":self.get_folder_size_modify
         }
 
         self.register("cpu_percent")
@@ -38,7 +41,7 @@ class ProcessExporter:
         for monitor in monitors:
             self.register(monitor)
 
-        self.sink = Sink(self.config.get('data_path'))
+        self.sink = Sink(self.config)
         self.sink.check()
 
     @logger.catch
@@ -52,13 +55,12 @@ class ProcessExporter:
 
     @logger.catch
     def get_folder_size_modify(self):
-        logger.info("Monitor folder size")
         folder_path = self.config.get("folder_path")
         if folder_path == None: 
-            raise KeyError(f"Can not folder_path in config, please set folder_path before monitor folder size")
+            raise FieldNotFoundError(f"Can not folder_path in config, please set folder_path before monitor folder size")
 
         if os.path.exists(folder_path):
-            return self.exporter.get_folder_size(self.config.get("folder_path"))
+            return self.exporter.get_folder_size(folder_path)
         else:
             raise FileNotFoundError(f"folder_path: {folder_path} not found.")
     
@@ -69,12 +71,38 @@ class ProcessExporter:
     def start(self) -> None:
         logger.info("Start get process information")
         while True:
-            result = {"pid": self.pid, "function_name": self.func_name}
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            result = {"pid": self.pid, "function_name": self.func_name, "timestamp":timestamp}
             for func in self.registered_exporter:
                 result = {**result, **func()}
-            #logger.info(result)
-            self.sink.output("process_info.txt", f"{result}\n")
+            self.sink.output(result)
             if self._stop_loop: break
+
+@logger.catch
+def test_daemon():
+
+    pid = os.getpid()
+    pe = ProcessExporter(pid=pid, config_path="./config.json", func_name=test_daemon.__name__)
+
+    daemon = threading.Thread(
+        target=pe.start, daemon=True
+    )
+
+    daemon.start()
+    total: int = 0
+    for x in range(100_000_000_000):
+        total += x
+
+    pe.stop()
+    daemon.join()
+
+@logger.catch
+def test():
+
+    pid = os.getpid()
+    pe = ProcessExporter(pid=pid, conf_path="./config.json")
+    pe.start()
+    pe.stop()
 
 def doctor(config_path: str) -> Callable:
     def decorator(func: Callable) -> Callable:
@@ -97,3 +125,14 @@ def doctor(config_path: str) -> Callable:
             return result
         return wrapper
     return decorator
+
+@logger.catch
+@doctor("./application_monitor/monitor_prometheus.json")
+def test_decortor():
+
+    total: int = 0
+    for x in range(100_000_000_000_000): total += x
+
+if __name__ == "__main__":
+    
+    test_decortor()

@@ -1,8 +1,0 @@
-{
-    "interval": 15,
-    "monitors":[
-        "folder_info"
-    ],
-    "folder_path":"./",
-    "data_path":"./var/log/"
-}

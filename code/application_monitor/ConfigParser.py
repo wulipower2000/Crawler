@@ -3,8 +3,8 @@ import json
 
 from abc import ABC, abstractmethod
 from typing import Dict
+from typing import List
 from loguru import logger
-
 
 class ConfigParser:
 
@@ -13,7 +13,6 @@ class ConfigParser:
 
     @abstractmethod
     def parser(self): pass
-
 
 class JsonConfigParser(ConfigParser):
     #Class to Parser Json condigurateion to dict
@@ -32,10 +31,10 @@ class JsonConfigParser(ConfigParser):
             raise FileNotFoundError(f"Input json file: {self.path} not exist.")
     
     @logger.catch
-    def load(self) -> Dict[str, str]:
+    def load(self):
         logger.info("Parser configuration to dict.")
         with open(self.path, 'r') as json_obj:
-            output = json.load(json_obj)
-        return output
+            json_config = json.load(json_obj)
+        return json_config
 
 
