@@ -35,7 +35,6 @@ class psql(Sink):
         self.engine = self._connect_psql(
             host, port, user, password, database)
 
-    @logger.catch()
     def _connect_psql(self,
             host: str, port: int, user: str,
             password: str, database: str):
@@ -77,7 +76,6 @@ class psql(Sink):
         logger.info("Close psql connection.")
         self.engine.dispose()
 
-    @logger.catch()
     def sink(self, data: pd.DataFrame, table: str, if_exists='replace') -> None:
         """
         :param data:
@@ -101,7 +99,6 @@ class psql(Sink):
 
 class csv(Sink):
 
-    @logger.catch()
     def sink(self, data: pd.DataFrame, path: str) -> None:
         """
         :param data:
@@ -114,7 +111,6 @@ class csv(Sink):
         data.to_csv(path)
         logger.info("Data writing completed")
 
-    @logger.catch()
     def dest_exist(self, path: str) -> None:
         """
         Check if the destination directory exists.
