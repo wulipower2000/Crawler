@@ -1,0 +1,116 @@
+2024-01-28 17:57:37 INFO From Exporter.__init__ : Start monitor process info
+2024-01-28 17:57:37 INFO From Exporter.__init__ : Parser configuration
+2024-01-28 17:57:37 ERROR From main.<module> : An error has been caught in function '<module>', process 'MainProcess' (1897349), thread 'MainThread' (140664275032960):
+Traceback (most recent call last):
+
+> File "/home/chihwei/playground/Crawler/./src/main.py", line 39, in <module>
+    main()
+    └ <function Logger.catch.<locals>.Catcher.__call__.<locals>.catch_wrapper at 0x7feee9adde10>
+
+  File "/home/chihwei/playground/Crawler/.venv/lib/python3.10/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function BaseCommand.main at 0x7feef39fb130>
+           └ <Command wrapper>
+  File "/home/chihwei/playground/Crawler/.venv/lib/python3.10/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x7feee9a47250>
+         │    └ <function Command.invoke at 0x7feef39fbbe0>
+         └ <Command wrapper>
+  File "/home/chihwei/playground/Crawler/.venv/lib/python3.10/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'date': '20240126', 'path': '.'}
+           │   │      │    │           └ <click.core.Context object at 0x7feee9a47250>
+           │   │      │    └ <function porcess_decartor.<locals>.decorator.<locals>.wrapper at 0x7feee9a88550>
+           │   │      └ <Command wrapper>
+           │   └ <function Context.invoke at 0x7feef39fa950>
+           └ <click.core.Context object at 0x7feee9a47250>
+  File "/home/chihwei/playground/Crawler/.venv/lib/python3.10/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+                       │       └ {'date': '20240126', 'path': '.'}
+                       └ ()
+
+  File "/home/chihwei/playground/Crawler/src/PythonFunctionMonitor/Doctor.py", line 14, in wrapper
+    process_exporter = ProcessExporter(
+                       └ <class 'PythonFunctionMonitor.Exporter.ProcessExporter'>
+
+  File "/home/chihwei/playground/Crawler/src/PythonFunctionMonitor/Exporter.py", line 26, in __init__
+    config_parser.check()
+    │             └ <function JsonConfigParser.check at 0x7feee9ade290>
+    └ <PythonFunctionMonitor.ConfigParser.JsonConfigParser object at 0x7feee9a472e0>
+
+  File "/home/chihwei/playground/Crawler/src/PythonFunctionMonitor/ConfigParser.py", line 32, in check
+    raise FileNotFoundError(f"Input json file: {self.path} not exist.")
+
+FileNotFoundError: Input json file: ./monitor_prometheus.json not exist.
+2024-01-28 17:59:04 INFO From Exporter.__init__ : Start monitor process info
+2024-01-28 17:59:04 INFO From Exporter.__init__ : Parser configuration
+2024-01-28 17:59:04 ERROR From main.<module> : An error has been caught in function '<module>', process 'MainProcess' (1897616), thread 'MainThread' (140129912335232):
+Traceback (most recent call last):
+
+> File "/home/chihwei/playground/Crawler/./src/main.py", line 39, in <module>
+    main()
+    └ <function Logger.catch.<locals>.Catcher.__call__.<locals>.catch_wrapper at 0x7f727f2cde10>
+
+  File "/home/chihwei/playground/Crawler/.venv/lib/python3.10/site-packages/click/core.py", line 1157, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function BaseCommand.main at 0x7f7289203130>
+           └ <Command wrapper>
+  File "/home/chihwei/playground/Crawler/.venv/lib/python3.10/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x7f72851bb850>
+         │    └ <function Command.invoke at 0x7f7289203be0>
+         └ <Command wrapper>
+  File "/home/chihwei/playground/Crawler/.venv/lib/python3.10/site-packages/click/core.py", line 1434, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'date': '20240126', 'path': '.'}
+           │   │      │    │           └ <click.core.Context object at 0x7f72851bb850>
+           │   │      │    └ <function porcess_decartor.<locals>.decorator.<locals>.wrapper at 0x7f72851fc550>
+           │   │      └ <Command wrapper>
+           │   └ <function Context.invoke at 0x7f7289202950>
+           └ <click.core.Context object at 0x7f72851bb850>
+  File "/home/chihwei/playground/Crawler/.venv/lib/python3.10/site-packages/click/core.py", line 783, in invoke
+    return __callback(*args, **kwargs)
+                       │       └ {'date': '20240126', 'path': '.'}
+                       └ ()
+
+  File "/home/chihwei/playground/Crawler/src/PythonFunctionMonitor/Doctor.py", line 14, in wrapper
+    process_exporter = ProcessExporter(
+                       └ <class 'PythonFunctionMonitor.Exporter.ProcessExporter'>
+
+  File "/home/chihwei/playground/Crawler/src/PythonFunctionMonitor/Exporter.py", line 26, in __init__
+    config_parser.check()
+    │             └ <function JsonConfigParser.check at 0x7f727f2ce290>
+    └ <PythonFunctionMonitor.ConfigParser.JsonConfigParser object at 0x7f72851bb8e0>
+
+  File "/home/chihwei/playground/Crawler/src/PythonFunctionMonitor/ConfigParser.py", line 32, in check
+    raise FileNotFoundError(f"Input json file: {self.path} not exist.")
+
+FileNotFoundError: Input json file: ./src/monitor_prometheus.json not exist.
+2024-01-28 17:59:29 INFO From Exporter.__init__ : Start monitor process info
+2024-01-28 17:59:29 INFO From Exporter.__init__ : Parser configuration
+2024-01-28 17:59:29 INFO From ConfigParser.check : Check configuration path: ./config/monitor_prometheus.json: success.
+2024-01-28 17:59:29 INFO From ConfigParser.load : Parser configuration to dict.
+2024-01-28 17:59:29 INFO From Monitor._register : Register exporter of cpu_percent
+2024-01-28 17:59:29 INFO From Monitor._register : Register exporter of memory_info
+2024-01-28 17:59:29 INFO From Monitor._register : Register exporter of folder_size
+2024-01-28 17:59:29 INFO From Sink.check : Check whether the specified port: 5566 is available.
+2024-01-28 17:59:29 INFO From Sink._port_not_available : port: 5566 is not in use.
+2024-01-28 17:59:29 INFO From Exporter.start : Start get process information
+2024-01-28 17:59:29 INFO From Crawler.run : ========== Step 1: get request ==========
+2024-01-28 17:59:29 INFO From Requestor.get_request : Sending a request to the URL: https://www.twse.com.tw/rwd/zh/fund/T86?date=20240126&selectType=ALL&response=html
+2024-01-28 17:59:31 INFO From Requestor.check_status : Request status code: 200
+2024-01-28 17:59:31 INFO From Crawler.run : ========== Step 2: Parse to Pandas DataFrame ==========
+2024-01-28 17:59:31 INFO From Parser.parse_html_to_dataframe : Parsing HTML to DataFrame
+2024-01-28 18:00:06 INFO From Parser.check_data : data shape: (14680, 18)
+2024-01-28 18:00:06 INFO From Crawler.run : ========== Step 3: sink data ==========
+2024-01-28 18:00:06 INFO From Sink.dest_exist : Check data directory exist.
+2024-01-28 18:00:06 INFO From Sink.dest_exist : Data directory is: ./20240126
+2024-01-28 18:00:06 WARNING From Sink.dest_exist : ./20240126: not exist.
+2024-01-28 18:00:06 WARNING From Sink.dest_exist : Create data directory
+2024-01-28 18:00:06 INFO From Sink.dest_exist : Directory is Created!
+2024-01-28 18:00:06 INFO From Sink.sink : Start writing data
+2024-01-28 18:00:06 INFO From Sink.sink : Data writing completed
