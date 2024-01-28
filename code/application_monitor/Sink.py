@@ -70,7 +70,7 @@ class PrometheusSink(Sink):
     def _port_not_available(self) -> bool:
         try:
             self.sock.connect((self.host, self.port))
-            logger.warning(f"port :{self.port} has been use.")
+            logger.warning(f"port :{self.port} has been use, try port {self.port + 1}.")
             return True
         except:
             logger.info(f"port: {self.port} is not in use.")
