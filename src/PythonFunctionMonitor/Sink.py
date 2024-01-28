@@ -10,7 +10,7 @@ from typing import Union
 
 import socket
 from prometheus_client import Gauge, start_http_server
-from application_monitor.CustomException import PrometheusSinkMetricNotFound
+from PythonFunctionMonitor.CustomException import PrometheusSinkMetricNotFound
 
 class Sink:
     
@@ -35,7 +35,6 @@ class TextSink(Sink):
         self.path = config.get("log_path")
         self.file_name = f"{self.path}/process_info.txt"
 
-    @logger.catch
     def check(self) -> None:
          
         if os.path.isdir(self.path):
@@ -51,7 +50,6 @@ class TextSink(Sink):
 
 class PrometheusSink(Sink):
 
-    #def __init__(self, config: Dict[str, Union[str, int, float]]) -> None:
     def __init__(self, config) -> None:
         self.host = config.get("host")
         self.port = config.get("port")
@@ -61,12 +59,10 @@ class PrometheusSink(Sink):
         self.registered_metric("memory_rss", "memory rss of process", ["pid", "function_name"])
         self.registered_metric("memory_vms", "memory vms of process", ["pid", "function_name"])
 
-        for metric in config.get("monitors"):
+        for metric in config.get("monitors", []):
             self.registered_metric(metric, labels=["pid", "function_name"])
 
-        start_http_server(addr=self.host, port=self.port)
 
-    @logger.catch
     def _port_not_available(self) -> bool:
         try:
             self.sock.connect((self.host, self.port))
@@ -76,14 +72,13 @@ class PrometheusSink(Sink):
             logger.info(f"port: {self.port} is not in use.")
             return False
 
-    @logger.catch
     def registered_metric(self, metric: str, desc: str=None, labels: List[str]=list()) -> None:
         if desc == None: desc = metric
         if len(labels) == 0:
             self.metrics[metric] = Gauge(metric, desc)
         else:
             self.metrics[metric] = Gauge(metric, desc, labels)
-    @logger.catch
+
     def check(self) -> None:
         """
         Function to check port or other network is available.
@@ -93,8 +88,9 @@ class PrometheusSink(Sink):
         logger.info(f"Check whether the specified port: {self.port} is available.")
         while self._port_not_available():
             self.port += 1
+        
+        start_http_server(addr=self.host, port=self.port)
 
-    @logger.catch
     def output(self,data:Dict[str, Union[str, int, float]]) -> None: 
 
         pid = data.get("pid")

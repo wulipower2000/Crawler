@@ -1,5 +1,6 @@
 import psutil
 import sh
+import os
 
 from loguru import logger
 from typing import Dict
@@ -9,28 +10,56 @@ class SystemUsage:
     """
     System usage monitor.
     """
-    def __init__(self, pid: int, interval: int, unit: str="MB") -> None:
+    def __init__(self, pid: int, config: Dict[str, Union[str, int]], unit: str="MB") -> None:
         """
         :param pid:
-            - desc: process ID
-        :param interval:
-            - desc monitor time interval
+            - desc: process ID,
+        :param config:
+            - desc: configuration.
+        :param unit:
+            - desc: unit of memory and folfer size.
         """
         self.pid = pid
-        self.interval = interval
+        self.config = config
+        self.interval = self.config.get("interval", 15)
         self.process_info = psutil.Process(pid)
         self.unit = unit
 
-    @logger.catch
+        self.monitors = {
+            "cpu_percent": self.get_cpu_percent,
+            "memory_info": self.get_memory_info,
+            "folder_size": self.get_folder_size
+        }
+
+        self.registered_monitor = list()
+
+        self._register("cpu_percent")
+        self._register("memory_info")
+
+        self.targets = self.config.get("monitors", [])
+
+        for target in self.targets:
+            self._register(target)
+
+    def _register(self, target: str) -> None:
+        """
+        Function to register monitor to monitoring list.
+        """
+        logger.info(f"Register exporter of {target}")
+        func = self.monitors.get(target)
+        if func:
+            self.registered_monitor.append(func)
+        else:
+            raise KeyError(f"Can not found input monitor target: {target} in all exporters")
+
+    
     def get_cpu_percent(self) -> Dict[str, str]:
         """
         Function to monitor process cpu percentage.
         """
-        
         cpu_percent = self.process_info.cpu_percent(interval=self.interval)
         return {"cpu_percent": cpu_percent}
 
-    @logger.catch
     def get_memory_info(self) -> Dict[str, str]:
         """
         Function to monitor memory rss and vms.
@@ -44,11 +73,16 @@ class SystemUsage:
         )
         return {"memory_rss": mem_rss, "memory_vms": mem_vms}
 
-    @logger.catch
-    def get_folder_size(self, path: str) -> Dict[str, float]:
+    def get_folder_size(self) -> Dict[str, float]:
         """
         Function to get folder size.
         """
+
+        path = self.config.get('folder_path')
+
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"folder_path: {folder_path} not found.")
+
         folder_size, folder_path = sh.du("-s", path).splitlines()[0].split('\t')
         folder_size = self.convert_bytes(
             data = folder_size, unit = self.unit
@@ -56,7 +90,6 @@ class SystemUsage:
         
         return {"folder_size":folder_size, "folder_path": folder_path}
 
-    @logger.catch
     def convert_bytes(self, data: Union[str, int, float], unit: str) -> float:
         """
         Convert data to input unit.

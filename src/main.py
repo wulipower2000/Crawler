@@ -1,7 +1,10 @@
 import click
+import io
+import traceback
+import sys
 from loguru import logger
 from Crawler import II_Crawler
-from application_monitor.Exporter import doctor
+from PythonFunctionMonitor.Doctor import porcess_decartor
 
 trace = logger.add(
     sink="./crawler.log",
@@ -18,12 +21,17 @@ trace = logger.add(
 @click.command(no_args_is_help=True)
 @click.option('-d', '--date', 'date', help='--date yyyymmdd')
 @click.option('-p', '--path', 'path', help='--path [path/to/data/folder]')
-@doctor('./monitor_prometheus.json')
-#@doctor('./monitor.json')
+@porcess_decartor('./config/monitor_prometheus.json')
 def main(date, path):
 
-    II_scraper = II_Crawler(date, f"{path}/{date}/II.csv")
-    II_scraper.run()
+    try:
+        II_scraper = II_Crawler(date, f"{path}/{date}/II.csv")
+        II_scraper.run()
+    except:
+        fp = io.StringIO()
+        traceback.print_exc(file=fp)
+        logger.error(fp.getvalue())
+        sys.exit(2)
 
 if __name__ == "__main__":
 

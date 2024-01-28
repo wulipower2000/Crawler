@@ -15,12 +15,13 @@ class ConfigParser:
     def parser(self): pass
 
 class JsonConfigParser(ConfigParser):
-    #Class to Parser Json condigurateion to dict
+    """
+    Class to Parser Json condigurateion to dict
+    """
     def __init__(self, path:str) -> None:
         
         self.path = path # path to json configuration
 
-    @logger.catch
     def check(self) -> None:
         """
         Function to check configuration exist.
@@ -30,7 +31,6 @@ class JsonConfigParser(ConfigParser):
         else:
             raise FileNotFoundError(f"Input json file: {self.path} not exist.")
     
-    @logger.catch
     def load(self):
         logger.info("Parser configuration to dict.")
         with open(self.path, 'r') as json_obj:
